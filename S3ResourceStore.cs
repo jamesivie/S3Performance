@@ -24,7 +24,7 @@ namespace S3Performance
     {
         None,
         SSE_S3,
-        SSE_KMS,    // not supported yet!
+        SSE_KMS,
         SSE_C,
     }
     class S3StoreInfo : IDisposable
@@ -91,7 +91,7 @@ namespace S3Performance
                     encryptionType = EncryptionType.SSE_S3;
                     break;
                 case "s3k:":
-                    encryptionType = EncryptionType.SSE_KMS;    // not supported yet!
+                    encryptionType = EncryptionType.SSE_KMS;
                     break;
                 case "s3x:":
                     encryptionType = EncryptionType.SSE_C;
@@ -191,12 +191,11 @@ namespace S3Performance
                     request.ServerSideEncryptionCustomerProvidedKeyMD5 = EncryptionKeyMD5;
                     break;
                 case EncryptionType.SSE_S3:
+                    request.ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256;
+                    break;
+                case EncryptionType.SSE_KMS:
                     request.ServerSideEncryptionMethod = ServerSideEncryptionMethod.AWSKMS;
                     break;
-                //case EncryptionType.SSE_KMS:
-                //    request.ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256;
-                //    request.ServerSideEncryptionKeyManagementServiceKeyId = ServerSideEncryptionMethod.AES256;
-                //    break;
                 default: throw new InvalidOperationException();
             }
 
@@ -400,6 +399,7 @@ psur.Headers["x-amz-server-side​-encryption​-customer-key"] = EncryptionKey;
 psur.Headers["x-amz-server-side​-encryption​-customer-key-MD5"] = EncryptionKeyMD5;
 #endif
                         break;
+                    case EncryptionType.SSE_KMS:
                     case EncryptionType.SSE_S3:
                         break;
                     default: throw new InvalidOperationException();

@@ -17,6 +17,14 @@ namespace S3Performance
             if (args.Length < 3)
             {
                 Console.WriteLine(String.Format(System.Globalization.CultureInfo.InvariantCulture, "{0} usage: {0} <target_location> <files> <bytes_per_file>", Environment.GetCommandLineArgs()[0]));
+                Console.WriteLine("  <target_location>: a target folder path of the form: s3://my_bucket_name/myobjectkey");
+                Console.WriteLine("    s3:// uses no encryption");
+                Console.WriteLine("    s3e:// uses SSE-S3 encryption");
+                Console.WriteLine("    s3k:// uses SSE-KMS encryption");
+                Console.WriteLine("    s3x:// uses SSE-C encryption");
+                Console.WriteLine("  <files> is the number of files to read and then writer");
+                Console.WriteLine("  <bytes_per_file> is the average number of bytes to write per file");
+                Console.WriteLine("    the actual number of bytes will vary randomly between half this number and 50% more than this number");
                 Console.WriteLine();
                 return;
             }
